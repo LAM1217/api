@@ -32,7 +32,7 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->group("api", function ($routes) {
+$routes->group("", function ($routes) {
 //---------- LOGIN
 $routes->post("login", "Login::index");
 $routes->get("check", "User::check");

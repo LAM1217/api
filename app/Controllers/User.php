@@ -43,17 +43,21 @@ class User extends BaseController
     }
 
     public function update($id = null){
+        //$input = $this->request->getVar();
+        $input = $this->request->getJSON();
+        if($input){
+            $data = [
+                'name' => $input->name,
+                'phone' => $input->phone,
+                'identificator' => $input->identificator,
+                'email' => $input->email,
+                'active' => 1
+                
+            ];
+        }
         $users = new UserModel();
-        $input = $this->request->getVar();
-        $data = $users->find($id);
-        $data = [
-            'name' => $input['name'],
-            'phone' => $input['phone'],
-            'identificator' => $input['identificator'],
-            'email' => $input['email'],
-            'active'   => 1
-
-        ];
+        $result = $users->find($id);
+        
         $result = $users->update($id, $data);
         if($result){
             $response = [

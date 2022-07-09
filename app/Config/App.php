@@ -23,11 +23,8 @@ class App extends BaseConfig
      *
      * @var string
      */
-<<<<<<< HEAD
+
     public $baseURL = 'http://51.161.104.206/api';
-=======
-    public $baseURL = 'http://localhost/api';
->>>>>>> 71eae0b2b174da5962cd04e4f254b77ba8bdf439
 
     /**
      * --------------------------------------------------------------------------
