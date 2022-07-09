@@ -3,6 +3,10 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\API\ResponseTrait;
+use App\Models\ModelDetailorders;
+use App\Models\OrdersModel;
+$base = new BaseController();
 
 class Orders extends BaseController
 {
