@@ -11,7 +11,7 @@ $base = new BaseController();
 class Orders extends BaseController
 {
     public function index(){
-        $order = new OdersModel();
+        $order = new OrdersModel();
         //meter codecomerce si es admin, sino meter iduser
         return $this->respond(['orders' => $order->where('iduser',$this->checktoken())->findAll()], 200);
     }
@@ -21,7 +21,7 @@ class Orders extends BaseController
             'total' => ['rules' => 'required|min_length[4]|max_length[255]']];
             
         if($this->validate($rules)){
-            $order = new OdersModel();
+            $order = new OrdersModel();
             $data = [
                 'total'    => $this->request->getVar('total'),
                 'idcliente'    => $this->request->getVar('idcliente'),
@@ -55,7 +55,7 @@ class Orders extends BaseController
     }
 
     public function search($id=null){
-        $order = new OdersModel();
+        $order = new OrdersModel();
         $data = $order->getWhere(['id' => $id])->getResult();
         if($data){
             return $this->respond(['order'=>$data],200);
@@ -64,18 +64,7 @@ class Orders extends BaseController
         }
     }
 
-    public function update($id = null){
-        //$input = $this->request->getVar();
-        $input = $this->request->getJSON();
-        if($input){
-            $data = [
-                'total' => $input->total,
-                'idcliente' => $input->idclient,
-                'iduser' => $input->iduser,
-                'status' => $input->status   
-            ];
-        }
-        $order = new OdersModel();
+    public function update($idrdersModel();
         $find = $order->find($id);
         if(!$find){
             $response = [
@@ -102,7 +91,7 @@ class Orders extends BaseController
 
     public function delete($id = null){
     
-        $order = new OdersModel();
+        $order = new OrdersModel();
         $data = $order->find($id);
         if($data){
             $order->delete($id);
@@ -121,7 +110,7 @@ class Orders extends BaseController
 
     public function paged($page = null){
         $pager = service('pager');
-        $order = new OdersModel();
+        $order = new OrdersModel();
         $data = [
             'orders' => $order->where('iduser',$this->checktoken())->paginate(1),
             'pager' => $order->pager
