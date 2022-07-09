@@ -56,7 +56,14 @@ class User extends BaseController
             ];
         }
         $users = new UserModel();
-        $result = $users->find($id);
+        $find = $users->find($id);
+        if(!$find){
+            $response = [
+                'status'   => 400,
+                'messages' => 'El usuario no existe',
+                'data' => ['user'=> null]];
+            return $this->respond($response);
+        }
         
         $result = $users->update($id, $data);
         if($result){

@@ -68,6 +68,12 @@ $routes->get("client", "Client::index", ['filter' => 'authFilter']);
 $routes->get("client/(:num)", "Client::search/$1", ['filter' => 'authFilter']);
 $routes->put("client/(:num)", "Client::update/$1", ['filter' => 'authFilter']);
 $routes->delete("client/(:num)", "Client::delete/$1", ['filter' => 'authFilter']);
+//---------- ORDENES
+$routes->post("orders", "Orders::insert", ['filter' => 'authFilter']);
+$routes->get("orders", "Orders::index", ['filter' => 'authFilter']);
+$routes->get("orders/(:num)", "Orders::search/$1", ['filter' => 'authFilter']);
+$routes->put("orders/(:num)", "Orders::update/$1", ['filter' => 'authFilter']);
+$routes->delete("orders/(:num)", "Orders::delete/$1", ['filter' => 'authFilter']);
 });
 /*
  * --------------------------------------------------------------------
