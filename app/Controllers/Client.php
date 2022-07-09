@@ -4,13 +4,14 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\ClientModel;
+use App\Models\ModelClient;
 $base = new BaseController();
 
 class Client extends BaseController
 {
+    use ResponseTrait;
     public function index(){
-        $client = new ClientModel();
+        $client = new ModelClient();
         return $this->respond(['clients' => $client->where('iduser',$this->checktoken())->findAll()], 200);
     }
 
@@ -20,7 +21,7 @@ class Client extends BaseController
             'identificator' => ['rules' => 'required|min_length[4]|max_length[255]']];
             
         if($this->validate($rules)){
-            $client = new ClientModel();
+            $client = new ModelClient();
             $data = [
                 'name'    => $this->request->getVar('name'),
                 'identificator'    => $this->request->getVar('identificator'),
@@ -56,7 +57,7 @@ class Client extends BaseController
     }
 
     public function search($id=null){
-        $client = new ClientModel();
+        $client = new ModelClient();
         $data = $client->getWhere(['id' => $id])->getResult();
         if($data){
             return $this->respond(['client'=>$data],200);
@@ -78,7 +79,7 @@ class Client extends BaseController
                 'type' => $input->type     
             ];
         }
-        $client = new ClientModel();
+        $client = new ModelClient();
         $find = $client->find($id);
         if(!$find){
             $response = [
@@ -105,7 +106,7 @@ class Client extends BaseController
 
     public function delete($id = null){
     
-        $client = new ClientModel();
+        $client = new ModelClient();
         $data = $client->find($id);
         if($data){
             $client->delete($id);
@@ -124,7 +125,7 @@ class Client extends BaseController
 
     public function paged($page = null){
         $pager = service('pager');
-        $client = new ClientModel();
+        $client = new ModelClient();
         $data = [
             'clients' => $client->where('iduser',$this->checktoken())->paginate(1),
             'pager' => $client->pager

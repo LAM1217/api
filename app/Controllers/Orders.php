@@ -3,15 +3,19 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\API\ResponseTrait;
+use App\Models\ModelOrders;
+$base = new BaseController();
 
 class Orders extends BaseController
 {
+    use ResponseTrait;
     public function index(){
 
-        $order = new OdersModel();
+        $order = new ModelOrders();
         //meter codecomerce si es admin, sino meter iduser
-        $data= $order->select('order.*,do.*')
-                                        ->join('detail_order as do', 'do.idorder = order.id', 'left')
+        $data= $order->select('orders.*,do.*')
+                                        ->join('detail_order as do', 'do.idorder = orders.id', 'left')
                                         //->where('menu.iduser',$this->checktoken())
                                         ->findAll();
 
@@ -26,7 +30,7 @@ class Orders extends BaseController
             'total' => ['rules' => 'required|min_length[4]|max_length[255]']];
             
         if($this->validate($rules)){
-            $order = new OdersModel();
+            $order = new ModelOrders();
             $data = [
                 'total'    => $this->request->getVar('total'),
                 'idcliente'    => $this->request->getVar('idcliente'),
@@ -60,7 +64,7 @@ class Orders extends BaseController
     }
 
     public function search($id=null){
-        $order = new OdersModel();
+        $order = new ModelOrders();
         $data = $order->getWhere(['id' => $id])->getResult();
         if($data){
             return $this->respond(['order'=>$data],200);
@@ -80,7 +84,7 @@ class Orders extends BaseController
                 'status' => $input->status   
             ];
         }
-        $order = new OdersModel();
+        $order = new ModelOrders();
         $find = $order->find($id);
         if(!$find){
             $response = [
@@ -107,7 +111,7 @@ class Orders extends BaseController
 
     public function delete($id = null){
     
-        $order = new OdersModel();
+        $order = new ModelOrders();
         $data = $order->find($id);
         if($data){
             $order->delete($id);
@@ -126,7 +130,7 @@ class Orders extends BaseController
 
     public function paged($page = null){
         $pager = service('pager');
-        $order = new OdersModel();
+        $order = new ModelOrders();
         $data = [
             'orders' => $order->where('iduser',$this->checktoken())->paginate(1),
             'pager' => $order->pager
