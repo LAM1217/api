@@ -7,9 +7,18 @@ use App\Controllers\BaseController;
 class Orders extends BaseController
 {
     public function index(){
+
         $order = new OdersModel();
         //meter codecomerce si es admin, sino meter iduser
-        return $this->respond(['orders' => $order->where('iduser',$this->checktoken())->findAll()], 200);
+        $data= $order->select('order.*,do.*')
+                                        ->join('detail_order as do', 'do.idorder = order.id', 'left')
+                                        //->where('menu.iduser',$this->checktoken())
+                                        ->findAll();
+
+        return $this->respond(["status"=>200,
+                                "data" => ["orders"=>$data]
+                                ],200);
+        //return $this->respond(['orders' => $order->where('iduser',$this->checktoken())->findAll()], 200);
     }
 
     public function insert($value=''){
