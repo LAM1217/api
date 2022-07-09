@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\API\ResponseTrait;
+use App\Models\ClientModel;
+$base = new BaseController();
 
 class Client extends BaseController
 {
