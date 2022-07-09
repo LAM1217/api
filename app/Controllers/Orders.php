@@ -3,17 +3,22 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\API\ResponseTrait;
-use App\Models\ModelDetailorders;
-use App\Models\ModelOrders;
-$base = new BaseController();
 
 class Orders extends BaseController
 {
     public function index(){
-        $order = new ModelOrders();
+
+        $order = new OdersModel();
         //meter codecomerce si es admin, sino meter iduser
-        return $this->respond(['orders' => $order->where('iduser',$this->checktoken())->findAll()], 200);
+        $data= $order->select('order.*,do.*')
+                                        ->join('detail_order as do', 'do.idorder = order.id', 'left')
+                                        //->where('menu.iduser',$this->checktoken())
+                                        ->findAll();
+
+        return $this->respond(["status"=>200,
+                                "data" => ["orders"=>$data]
+                                ],200);
+        //return $this->respond(['orders' => $order->where('iduser',$this->checktoken())->findAll()], 200);
     }
 
     public function insert($value=''){
@@ -21,7 +26,7 @@ class Orders extends BaseController
             'total' => ['rules' => 'required|min_length[4]|max_length[255]']];
             
         if($this->validate($rules)){
-            $order = new ModelOrders();
+            $order = new OdersModel();
             $data = [
                 'total'    => $this->request->getVar('total'),
                 'idcliente'    => $this->request->getVar('idcliente'),
@@ -55,7 +60,7 @@ class Orders extends BaseController
     }
 
     public function search($id=null){
-        $order = new ModelOrders();
+        $order = new OdersModel();
         $data = $order->getWhere(['id' => $id])->getResult();
         if($data){
             return $this->respond(['order'=>$data],200);
@@ -64,7 +69,18 @@ class Orders extends BaseController
         }
     }
 
-    public function update($idrdersModel();
+    public function update($id = null){
+        //$input = $this->request->getVar();
+        $input = $this->request->getJSON();
+        if($input){
+            $data = [
+                'total' => $input->total,
+                'idcliente' => $input->idclient,
+                'iduser' => $input->iduser,
+                'status' => $input->status   
+            ];
+        }
+        $order = new OdersModel();
         $find = $order->find($id);
         if(!$find){
             $response = [
@@ -91,7 +107,7 @@ class Orders extends BaseController
 
     public function delete($id = null){
     
-        $order = new ModelOrders();
+        $order = new OdersModel();
         $data = $order->find($id);
         if($data){
             $order->delete($id);
@@ -110,7 +126,7 @@ class Orders extends BaseController
 
     public function paged($page = null){
         $pager = service('pager');
-        $order = new ModelOrders();
+        $order = new OdersModel();
         $data = [
             'orders' => $order->where('iduser',$this->checktoken())->paginate(1),
             'pager' => $order->pager
