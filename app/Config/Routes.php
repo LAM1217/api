@@ -62,6 +62,12 @@ $routes->get("atributes", "Atributes::index", ['filter' => 'authFilter']);
 $routes->get("atributes/(:num)", "Atributes::search/$1", ['filter' => 'authFilter']);
 $routes->put("atributes/(:num)", "Atributes::update/$1", ['filter' => 'authFilter']);
 $routes->delete("atributes/(:num)", "Atributes::delete/$1", ['filter' => 'authFilter']);
+//---------- CLIENTES
+$routes->post("client", "Client::insert", ['filter' => 'authFilter']);
+$routes->get("client", "Client::index", ['filter' => 'authFilter']);
+$routes->get("client/(:num)", "Client::search/$1", ['filter' => 'authFilter']);
+$routes->put("client/(:num)", "Client::update/$1", ['filter' => 'authFilter']);
+$routes->delete("client/(:num)", "Client::delete/$1", ['filter' => 'authFilter']);
 });
 /*
  * --------------------------------------------------------------------
